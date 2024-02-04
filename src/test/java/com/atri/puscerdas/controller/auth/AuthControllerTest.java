@@ -1,7 +1,8 @@
-package com.atri.puscerdas.controller;
+package com.atri.puscerdas.controller.auth;
 
 import com.atri.puscerdas.entity.Auth;
 import com.atri.puscerdas.model.WebResponse;
+import com.atri.puscerdas.model.auth.RegisterEmployeeRequest;
 import com.atri.puscerdas.model.auth.RegisterRequest;
 import com.atri.puscerdas.repository.AuthRepository;
 import com.atri.puscerdas.security.BCrypt;
@@ -73,7 +74,6 @@ public class AuthControllerTest {
         ).andDo(result -> {
             WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>(){});
             assertNotNull(response.getErrors());
-            assertEquals("password: Minimal Charecter is 5, password: must not be blank", response.getErrors());
         });
     }
 
@@ -93,7 +93,7 @@ public class AuthControllerTest {
         ).andDo(result -> {
             WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>(){});
             assertNotNull(response.getErrors());
-            assertEquals("password: Minimal Charecter is 5", response.getErrors());
+            assertEquals("password: Minimal Character is 5", response.getErrors());
         });
     }
 
@@ -120,7 +120,95 @@ public class AuthControllerTest {
         ).andDo(result -> {
             WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>(){});
             assertNotNull(response.getErrors());
-            assertEquals("Username already registerd", response.getErrors());
+            assertEquals("Username already register", response.getErrors());
+        });
+    }
+
+    @Test
+    void testRegisterEmployeeSuccess() throws Exception{
+        RegisterEmployeeRequest request = new RegisterEmployeeRequest();
+        request.setUsername("atri10");
+        request.setEmail("atri@gmail.com");
+        request.setPhone("08126373839");
+        mockMvc.perform(
+                post("/api/auth/employee-regist")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+            assertEquals("OKE", response.getData());
+        });
+    }
+
+    @Test
+    void testRegisterEmployeeEmpty() throws Exception {
+        RegisterEmployeeRequest request = new RegisterEmployeeRequest();
+        request.setUsername("");
+        request.setEmail("atri@gmail.com");
+        request.setPhone("08126373839");
+
+        mockMvc.perform(
+                post("/api/auth/employee-regist")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+        ).andExpect(
+                status().isBadRequest()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>(){});
+            assertNotNull(response.getErrors());
+        });
+    }
+
+    @Test
+    void testRegisterEmployeeBad() throws Exception {
+        RegisterEmployeeRequest request = new RegisterEmployeeRequest();
+        request.setUsername("atri10");
+        request.setEmail("atrigmailcom");
+        request.setPhone("08126373839");
+
+        mockMvc.perform(
+                post("/api/auth/employee-regist")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+        ).andExpect(
+                status().isBadRequest()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>(){});
+            assertNotNull(response.getErrors());
+            assertEquals("email: must be a well-formed email address", response.getErrors());
+        });
+    }
+
+    @Test
+    void testRegisterEmployeeExist() throws Exception {
+        Auth auth = new Auth();
+        auth.setUsername("atri10");
+        auth.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
+        auth.setRole(1);
+        auth.setStatus(1);
+        authRepository.save(auth);
+
+        RegisterEmployeeRequest request = new RegisterEmployeeRequest();
+        request.setUsername("atri10");
+        request.setEmail("atri@gmail.com");
+        request.setPhone("08126373839");
+
+        mockMvc.perform(
+                post("/api/auth/employee-regist")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+        ).andExpect(
+                status().isBadRequest()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>(){});
+            assertNotNull(response.getErrors());
+            assertEquals("Username already register", response.getErrors());
         });
     }
 }

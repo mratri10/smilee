@@ -4,7 +4,7 @@ CREATE TABLE auth(
     phone VARCHAR(100),
     email VARCHAR(100),
     token VARCHAR(255) NOT NULL,
-    token_exp BIGINT,
+    tokenExp BIGINT,
     role SMALLINT NOT NULL,
     status SMALLINT NOT NULL,
     PRIMARY KEY (username),
