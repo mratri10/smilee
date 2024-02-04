@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TokenResponse {
     private String token;
+    private long tokenExp;
 }

@@ -33,3 +33,10 @@ CREATE TABLE address(
     status VARCHAR(100),
     PRIMARY KEY (id)
 ) ENGINE InnoDB;
+
+CREATE TABLE resetpassword(
+    id Integer(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    tokenExp BIGINT,
+    PRIMARY KEY (id)
+) ENGINE InnoDB;

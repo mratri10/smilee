@@ -1,6 +1,7 @@
 package com.atri.puscerdas.controller;
 
 import com.atri.puscerdas.entity.Auth;
+import com.atri.puscerdas.entity.ResetPassword;
 import com.atri.puscerdas.model.TokenResponse;
 import com.atri.puscerdas.model.WebResponse;
 import com.atri.puscerdas.model.auth.*;
@@ -53,5 +54,23 @@ public class AuthController {
     public WebResponse<TokenResponse>login(@RequestBody LoginRequest request){
         TokenResponse tokenResponse = authService.login(request);
         return WebResponse.<TokenResponse>builder().data(tokenResponse).build();
+    }
+    @PostMapping(
+            path = "/api/reset-password",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String>resetPassword(@RequestBody ResetRequest request){
+        authService.resetPassword(request);
+        return WebResponse.<String>builder().data("OKE").build();
+    }
+    @PostMapping(
+            path = "/api/change-password",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String>changePassword(@RequestBody ChangePasswordRequest request){
+        authService.changePassword(request);
+        return  WebResponse.<String>builder().data("OKE").build();
     }
 }
