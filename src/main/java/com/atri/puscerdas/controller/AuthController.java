@@ -73,4 +73,5 @@ public class AuthController {
         authService.changePassword(request);
         return  WebResponse.<String>builder().data("OKE").build();
     }
+
 }

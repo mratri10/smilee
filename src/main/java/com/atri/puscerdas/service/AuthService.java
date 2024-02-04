@@ -80,13 +80,8 @@ public class AuthService {
         if(Objects.nonNull(request.getPhone())){
             auth.setPhone(request.getPhone());
         }
-        if(Objects.nonNull(request.getPassword()) && Objects.nonNull(request.getUserEncrypt())){
-            if(BCrypt.checkpw(auth.getUsername(),request.getUserEncrypt())){
-                auth.setPassword(request.getPassword());
-            }else{
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password Update Failed");
-            }
-        }
+        log.info("++++++++++++++++++++ "+auth.getEmail());
+        log.info("++++++++++++++++++++ "+auth.getPhone());
         authRepository.save(auth);
         return AuthResponse.builder()
                 .username(auth.getUsername())
