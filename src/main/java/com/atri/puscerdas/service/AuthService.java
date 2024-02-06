@@ -80,8 +80,6 @@ public class AuthService {
         if(Objects.nonNull(request.getPhone())){
             auth.setPhone(request.getPhone());
         }
-        log.info("++++++++++++++++++++ "+auth.getEmail());
-        log.info("++++++++++++++++++++ "+auth.getPhone());
         authRepository.save(auth);
         return AuthResponse.builder()
                 .username(auth.getUsername())
@@ -136,9 +134,10 @@ public class AuthService {
         validationService.validate(request);
 
         ResetPassword resetPassword = new ResetPassword();
+        resetPassword.setId(UUID.randomUUID().toString());
         resetPassword.setUsername(request.getUsername());
         resetPassword.setIdExp(next2hours());
-        resetPassword.setId(UUID.randomUUID().toString());
+
 
         resetPasswordRepository.save(resetPassword);
     }

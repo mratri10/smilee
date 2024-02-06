@@ -35,8 +35,8 @@ CREATE TABLE address(
 ) ENGINE InnoDB;
 
 CREATE TABLE resetpassword(
-    id Integer(100) NOT NULL,
+    id VARCHAR(100) NOT NULL,
     username VARCHAR(100) NOT NULL,
-    tokenExp BIGINT,
+    id-exp BIGINT,
     PRIMARY KEY (id)
 ) ENGINE InnoDB;
