@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Run') {
             steps {
-                sh 'java -jar /target/puscerdas-0.0.1-SNAPSHOT.jar'
+                sh 'java -jar /var/lib/jenkins/workspace/puscerdas_atri/target/puscerdas-0.0.1-SNAPSHOT.jar'
             }
         }
     }
