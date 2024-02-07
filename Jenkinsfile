@@ -3,23 +3,23 @@ pipeline {
     stages {
         stage('Init') {
                 steps {
-                    chmod -R 777 mvnw
+                    sh 'chmod -R 777 mvnw'
                 }
             }
         stage('clean') {
             steps {
-                ./mvnw clean
+                sh './mvnw clean'
             }
         }
         stage('test') {
             steps {
-                ./mvnw compile test-compile,
-                ./mvnw test
+                sh './mvnw compile test-compile',
+                sh './mvnw test'
             }
         }
         stage('Build') {
             steps {
-                ./mvnw clean package
+                sh './mvnw clean package'
             }
         }
         stage('Run') {
