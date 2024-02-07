@@ -13,7 +13,7 @@ pipeline {
         }
         stage('compile') {
             steps {
-                sh './mvnw compile test-compile',
+                sh './mvnw compile test-compile'
             }
         }
         stage('test') {
