@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Run') {
             steps {
-                sh 'nohup java -jar /var/lib/jenkins/workspace/puscerdas_atri/target/puscerdas-0.0.1-SNAPSHOT.jar'
+                sh 'nohup java -jar /var/lib/jenkins/workspace/puscerdas_atri/target/puscerdas-0.0.1-SNAPSHOT.jar &'
             }
         }
     }
