@@ -11,9 +11,13 @@ pipeline {
                 sh './mvnw clean'
             }
         }
-        stage('test') {
+        stage('compile') {
             steps {
                 sh './mvnw compile test-compile',
+            }
+        }
+        stage('test') {
+            steps {
                 sh './mvnw test'
             }
         }
