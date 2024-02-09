@@ -19,15 +19,15 @@ pipeline {
         stage('Deploy to Docker'){
             steps{
                 script{
-                    docker.build('puscerdas-image:latest', '.')
+                    sudo docker.build('puscerdas-image:latest', '.')
                 }
                 script{
-                    docker.withRegistry('http://192.168.1.103:2050', 'atri0205'){
-                        docker.image('puscerdas-image:latest').push()
+                    sudo docker.withRegistry('http://192.168.1.103:2050', 'atri0205'){
+                        sudo docker.image('puscerdas-image:latest').push()
                     }
                 }
                 script{
-                    docker.image('puscerdas-image:latest').run()
+                    sudo docker.image('puscerdas-image:latest').run()
                 }
             }
         }
