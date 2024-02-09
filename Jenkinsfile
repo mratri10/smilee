@@ -8,12 +8,7 @@ pipeline {
             }
         stage('clean') {
             steps {
-                sh './mvnw clean'
-            }
-        }
-        stage('compile') {
-            steps {
-                sh './mvnw compile test-compile'
+                sh './mvnw clean install'
             }
         }
         stage('test') {
@@ -21,14 +16,19 @@ pipeline {
                 sh './mvnw test'
             }
         }
-        stage('Build') {
-            steps {
-                sh './mvnw clean package'
-            }
-        }
-        stage('Run') {
-            steps {
-                sh 'java -jar /var/lib/jenkins/workspace/puscerdas_atri/target/puscerdas-0.0.1-SNAPSHOT.jar'
+        stage('Deploy to Docker'){
+            steps{
+                script{
+                    docker.build('puscerdas-image:latest', '.')
+                }
+                script{
+                    docker.withRegistry('http://192.168.1.103:0205', 'atri0205'){
+                        docker.image('puscerdas-image:latest').push()
+                    }
+                }
+                script{
+                    docker.image('puscerdas-image:latest').run()
+                }
             }
         }
     }
