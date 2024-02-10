@@ -1,4 +1,3 @@
-FROM openjdk:latest
-COPY your-application.jar /usr/src/app/puscerdas-0.0.1-SNAPSHOT.jar
-WORKDIR /usr/src/app
-CMD ["java", "-jar", "/puscerdas.jar"]
+EXPOSE 2707
+ADD target/puscerdas.jar puscerdas.jar
+ENTRYPOINT ["java", "-jar", "/puscerdas.jar"]
