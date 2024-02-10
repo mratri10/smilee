@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     // Copy files into workspace directory
-                    sh 'echo atri2808 | sudo -S cp -r /var/lib/jenkins/workspace/puscerdas_atri/target/puscerdas-0.0.1-SNAPSHOT.jar /var/java'
+                    sh 'atri2808 | sudo -S cp -r /var/lib/jenkins/workspace/puscerdas_atri/target/puscerdas-0.0.1-SNAPSHOT.jar /var/java'
                     // Build Docker image
                     docker.build('puscerdas-image:latest', '.')
                 }
