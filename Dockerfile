@@ -1,5 +1,5 @@
 # Use a base image
-FROM adoptopenjdk/openjdk17:alpine-slim
+FROM khipu/openjdk17-alpine
 
 # Expose a port (optional)
 EXPOSE 2707
