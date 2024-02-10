@@ -1,3 +1,11 @@
+# Use a base image
+FROM adoptopenjdk/openjdk17:alpine-slim
+
+# Expose a port (optional)
 EXPOSE 2707
-ADD target/puscerdas.jar puscerdas.jar
-ENTRYPOINT ["java", "-jar", "/puscerdas.jar"]
+
+# Copy the JAR file into the container
+COPY target/puscerdas.jar puscerdas.jar
+
+# Define the command to run your application
+CMD ["java", "-jar", "/puscerdas.jar"]
