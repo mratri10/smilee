@@ -1,11 +1,13 @@
 # Use a base image
+FROM maven:3.9.5-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
+
 FROM khipu/openjdk17-alpine
+# Copy the JAR file into the container
+COPY target/puscerdas-0.0.1-SNAPSHOT.jar.jar puscerdas.jar
 
 # Expose a port (optional)
 EXPOSE 2601
-
-# Copy the JAR file into the container
-COPY target/puscerdas.jar puscerdas.jar
-
 # Define the command to run your application
-CMD ["java", "-jar", "/puscerdas.jar"]
+ENTRYPOINT ["java", "-jar", "/puscerdas.jar"]
