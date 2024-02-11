@@ -2,7 +2,7 @@
 FROM khipu/openjdk17-alpine
 
 # Expose a port (optional)
-EXPOSE 2707
+EXPOSE 2601
 
 # Copy the JAR file into the container
 COPY target/puscerdas.jar puscerdas.jar
