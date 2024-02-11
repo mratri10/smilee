@@ -4,9 +4,6 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM khipu/openjdk17-alpine
-# Copy the JAR file into the container
-COPY target/puscerdas-0.0.1-SNAPSHOT.jar puscerdas.jar
-
 # Expose a port (optional)
 EXPOSE 2601
 # Define the command to run your application
