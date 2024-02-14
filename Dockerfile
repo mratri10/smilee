@@ -3,11 +3,12 @@ FROM maven:3.9.5-openjdk-17 AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
-FROM khipu/openjdk17-alpine
+FROM techiescamp/jre-17:1.0.0
+WORKDIR /app
 # Copy the JAR file into the container
 COPY target/puscerdas.jar puscerdas.jar
 
 # Expose a port (optional)
 EXPOSE 2601
 # Define the command to run your application
-ENTRYPOINT ["java", "-jar", "/puscerdas.jar"]
+CMD ["java", "-jar", "/puscerdas.jar"]

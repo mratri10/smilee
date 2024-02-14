@@ -1,7 +1,6 @@
 package com.atri.puscerdas.controller;
 
 import com.atri.puscerdas.entity.Auth;
-import com.atri.puscerdas.entity.ResetPassword;
 import com.atri.puscerdas.model.TokenResponse;
 import com.atri.puscerdas.model.WebResponse;
 import com.atri.puscerdas.model.auth.*;
