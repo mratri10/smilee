@@ -11,4 +11,4 @@ WORKDIR /app
 # Expose a port (optional)
 EXPOSE 2808
 # Define the command to run your application
-CMD ["java", "-jar", "/target/puscerdas.jar"]
+CMD ["java", "-jar", "target/puscerdas.jar"]
