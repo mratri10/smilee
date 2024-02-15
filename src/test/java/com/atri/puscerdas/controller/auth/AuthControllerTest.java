@@ -56,7 +56,7 @@ public class AuthControllerTest {
                 status().isOk()
         ).andDo(result -> {
             WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
-            assertEquals("OKE", response.getData());
+            assertEquals("OKE Atri", response.getData());
         });
     }
 
