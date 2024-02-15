@@ -1,0 +1,8 @@
+chmod +x mvnw
+./mvnw clean
+./mvnw compile test-compile
+./mvnw test
+./mvnw package
+sudo docker build -t atrialfa/puscerdas:1.4.0 .
+sudo docker container create --name containtPuscerdas -p 2808:2808 atrialfa/puscerdas:1.4.0
+sudo docker container start containtPuscerdas
