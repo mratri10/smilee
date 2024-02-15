@@ -9,6 +9,6 @@ WORKDIR /app
 COPY target/puscerdas.jar puscerdas.jar
 
 # Expose a port (optional)
-EXPOSE 2601
+EXPOSE 2808
 # Define the command to run your application
 CMD ["java", "-jar", "/puscerdas.jar"]
