@@ -20,6 +20,6 @@ public class ResetPassword {
     private String id;
     private String username;
 
-    @Column(name = "id-exp")
+    @Column(name = "id_exp")
     private long idExp;
 }
