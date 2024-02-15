@@ -29,7 +29,7 @@ public class AuthController {
     )
     public WebResponse<String>registerSuper(@RequestBody RegisterRequest request){
         authService.registerSuper(request);
-        return WebResponse.<String>builder().data("OKE").build();
+        return WebResponse.<String>builder().data("OKE Atri").build();
     }
 
     @PostMapping(
