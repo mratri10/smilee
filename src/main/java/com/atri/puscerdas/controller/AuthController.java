@@ -13,6 +13,15 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private AuthService authService;
+
+    @GetMapping(
+            path = "/api/aku",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String>registerSuper(){
+        return WebResponse.<String>builder().data("OKE").build();
+    }
     @PostMapping(
             path = "/api/auth/superregist",
             consumes = MediaType.APPLICATION_JSON_VALUE,
