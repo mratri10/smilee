@@ -55,11 +55,11 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already register");
         }
 
-        if (authRepository.existsById(request.getEmail())){
+        if (authRepository.existsByEmail(request.getEmail())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already register");
         }
 
-        if (authRepository.existsById(request.getPhone())){
+        if (authRepository.existsByPhone(request.getPhone())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone already register");
         }
 

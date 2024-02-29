@@ -215,6 +215,35 @@ public class AuthControllerTest {
     }
 
     @Test
+    void testRegisterEmployeeEmailExist() throws Exception {
+        Auth auth = new Auth();
+        auth.setUsername("atri10");
+        auth.setEmail("atri@gmail.com");
+        auth.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
+        auth.setRole(1);
+        auth.setStatus(1);
+        authRepository.save(auth);
+
+        RegisterEmployeeRequest request = new RegisterEmployeeRequest();
+        request.setUsername("atri100");
+        request.setEmail("atri@gmail.com");
+        request.setPhone("08126373839");
+
+        mockMvc.perform(
+                post("/api/auth/employee-regist")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+        ).andExpect(
+                status().isBadRequest()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>(){});
+            assertNotNull(response.getErrors());
+            assertEquals("Email already register", response.getErrors());
+        });
+    }
+
+    @Test
     void testRegisterUpdateSuccess() throws Exception {
         Auth auth = new Auth();
         auth.setUsername("atri10");
