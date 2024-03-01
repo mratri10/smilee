@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -167,8 +169,27 @@ public class AuthService {
         resetPasswordRepository.save(resetPassword);
     }
 
+    @Transactional
+    public List<AuthResponse> getListEmployee(){
+        List<Auth> authList = authRepository.findAll();
+
+        return authList.stream()
+                .map(this::mapAuthToResponse)
+                .toList();
+    }
+
     private Long next2hours(){
         return  System.currentTimeMillis()+(1000 * 60 * 60 * 2);
+    }
+
+    private AuthResponse mapAuthToResponse(Auth auth){
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setEmail(auth.getEmail());
+        authResponse.setPhone(auth.getPhone());
+        authResponse.setUsername(auth.getUsername());
+        authResponse.setRole(auth.getRole());
+
+        return  authResponse;
     }
 
 }

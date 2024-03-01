@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class AuthController {
     @Autowired
@@ -41,6 +43,16 @@ public class AuthController {
     public WebResponse<String>registerEmployee(@RequestBody RegisterEmployeeRequest request){
         authService.registerEmployee(request);
         return  WebResponse.<String>builder().data("OKE").build();
+    }
+
+    @GetMapping(
+            path = "/api/auth/employee-regist",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<List<AuthResponse>>getEmployee(){
+        List<AuthResponse> responseList= authService.getListEmployee();
+        return  WebResponse.<List<AuthResponse>>builder().data(responseList).build();
     }
 
     @PatchMapping(
