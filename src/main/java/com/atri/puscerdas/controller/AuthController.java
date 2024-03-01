@@ -1,6 +1,7 @@
 package com.atri.puscerdas.controller;
 
 import com.atri.puscerdas.entity.Auth;
+import com.atri.puscerdas.entity.ResetPassword;
 import com.atri.puscerdas.model.TokenResponse;
 import com.atri.puscerdas.model.WebResponse;
 import com.atri.puscerdas.model.auth.*;
@@ -20,12 +21,11 @@ public class AuthController {
 
 
     @GetMapping(
-            path = "/api/aku",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            path = "/api/aku"
     )
-    public WebResponse<String>apiAku(){
-        return WebResponse.<String>builder().data("OKE").build();
+    public WebResponse<AuthResponse>apiAku(Auth auth){
+        AuthResponse authResponse = authService.akuService(auth);
+        return WebResponse.<AuthResponse>builder().data(authResponse).build();
     }
     @PostMapping(
             path = "/api/auth/superregist",
@@ -87,6 +87,15 @@ public class AuthController {
     public WebResponse<String>resetPassword(@RequestBody ResetRequest request){
         authService.resetPassword(request);
         return WebResponse.<String>builder().data("OKE").build();
+    }
+
+    @GetMapping(
+            path = "/api/reset-password-list",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<List<ResetPassword>>listResetPassword(Auth auth){
+        List<ResetPassword> resetPasswords= authService.listResetPassword(auth);
+        return WebResponse.<List<ResetPassword>>builder().data(resetPasswords).build();
     }
     @PostMapping(
             path = "/api/change-password",

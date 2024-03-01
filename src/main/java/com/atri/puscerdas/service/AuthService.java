@@ -32,6 +32,17 @@ public class AuthService {
     @Autowired
     ValidationService validationService;
 
+
+    @Transactional
+    public AuthResponse akuService(Auth auth){
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setUsername(auth.getUsername());
+        authResponse.setEmail(auth.getEmail());
+        authResponse.setPhone(auth.getPhone());
+        authResponse.setRole(auth.getRole());
+        authResponse.setStatus(auth.getStatus());
+        return authResponse;
+    }
     @Transactional
     public void registerSuper(RegisterRequest request){
         validationService.validate(request);
@@ -144,34 +155,38 @@ public class AuthService {
         resetPassword.setUsername(request.getUsername());
         resetPassword.setIdExp(next2hours());
 
-
         resetPasswordRepository.save(resetPassword);
+    }
+
+    @Transactional
+    public List<ResetPassword> listResetPassword(Auth auth){
+        List<ResetPassword> resetPasswords = resetPasswordRepository.findAll();
+        return  resetPasswords;
     }
 
     @Transactional
     public void changePassword(ChangePasswordRequest request){
         validationService.validate(request);
-
+        log.info(request.getIdReset());
         ResetPassword resetPassword = resetPasswordRepository.findById(request.getIdReset()).orElse(null);
-
         if(resetPassword !=null && Objects.equals(resetPassword.getUsername(), request.getUsername()) && System.currentTimeMillis() < request.getIdResetExp()){
             Auth auth = authRepository.findById(request.getUsername()).orElse(null);
             if(auth != null){
                 auth.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
                 authRepository.save(auth);
+                log.info(request.getIdReset());
+                resetPasswordRepository.deleteById(request.getIdReset());
             }else{
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username not Found");
             }
         }else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID ini sudah tidak berlaku");
         }
-
-        resetPasswordRepository.save(resetPassword);
     }
 
     @Transactional
     public List<AuthResponse> getListEmployee(Auth auth){
-        List<Auth> authList = authRepository.findAll();
+        List<Auth> authList = authRepository.findByRole(1);
 
         return authList.stream()
                 .map(this::mapAuthToResponse)
@@ -189,7 +204,7 @@ public class AuthService {
         authResponse.setUsername(auth.getUsername());
         authResponse.setRole(auth.getRole());
 
-        return  authResponse;
+        return authResponse;
     }
 
 }

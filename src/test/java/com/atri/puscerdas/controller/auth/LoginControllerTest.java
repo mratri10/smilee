@@ -202,6 +202,11 @@ public class LoginControllerTest {
         resetPassword.setId("123456");
         resetPassword.setIdExp(System.currentTimeMillis()+100000000);
         resetPasswordRepository.save(resetPassword);
+        ResetPassword resetPassword1 = new ResetPassword();
+        resetPassword1.setUsername("atri10");
+        resetPassword1.setId("123457");
+        resetPassword1.setIdExp(System.currentTimeMillis()+100000001);
+        resetPasswordRepository.save(resetPassword1);
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
         changePasswordRequest.setUsername("atri10");
