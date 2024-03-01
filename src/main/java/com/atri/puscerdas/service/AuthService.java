@@ -50,7 +50,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void registerEmployee(RegisterEmployeeRequest request){
+    public void registerEmployee(Auth auth,RegisterEmployeeRequest request){
         validationService.validate(request);
 
         if (authRepository.existsById(request.getUsername())){
@@ -65,15 +65,15 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone already register");
         }
 
-        Auth auth = new Auth();
-        auth.setUsername(request.getUsername());
-        auth.setPassword(BCrypt.hashpw("pus12345", BCrypt.gensalt()));
-        auth.setEmail(request.getEmail());
-        auth.setPhone(request.getPhone());
-        auth.setRole(1); //0: SuperAdmin, 1:Admin, 2-99:User
-        auth.setStatus(1); //0:Not Approved, 1:Approved, 2:Freeze
+        Auth employeeAuth = new Auth();
+        employeeAuth.setUsername(request.getUsername());
+        employeeAuth.setPassword(BCrypt.hashpw("pus12345", BCrypt.gensalt()));
+        employeeAuth.setEmail(request.getEmail());
+        employeeAuth.setPhone(request.getPhone());
+        employeeAuth.setRole(1); //0: SuperAdmin, 1:Admin, 2-99:User
+        employeeAuth.setStatus(1); //0:Not Approved, 1:Approved, 2:Freeze
 
-        authRepository.save(auth);
+        authRepository.save(employeeAuth);
     }
 
     @Transactional
@@ -170,7 +170,7 @@ public class AuthService {
     }
 
     @Transactional
-    public List<AuthResponse> getListEmployee(){
+    public List<AuthResponse> getListEmployee(Auth auth){
         List<Auth> authList = authRepository.findAll();
 
         return authList.stream()

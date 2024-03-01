@@ -128,6 +128,15 @@ public class AuthControllerTest {
 
     @Test
     void testRegisterEmployeeSuccess() throws Exception{
+        Auth auth01 = new Auth();
+        auth01.setUsername("ayarin10");
+        auth01.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
+        auth01.setRole(0);
+        auth01.setStatus(1);
+        auth01.setToken("abcdefgh");
+        auth01.setTokenExp(System.currentTimeMillis()+1000000000);
+        authRepository.save(auth01);
+
         RegisterEmployeeRequest request = new RegisterEmployeeRequest();
         request.setUsername("atri10");
         request.setEmail("atri@gmail.com");
@@ -137,6 +146,7 @@ public class AuthControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
+                        .header("X-API-TOKEN","abcdefgh")
         ).andExpectAll(
                 status().isOk()
         ).andDo(result -> {
@@ -147,6 +157,15 @@ public class AuthControllerTest {
 
     @Test
     void testRegisterEmployeeEmpty() throws Exception {
+        Auth auth01 = new Auth();
+        auth01.setUsername("ayarin10");
+        auth01.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
+        auth01.setRole(0);
+        auth01.setStatus(1);
+        auth01.setToken("abcdefgh");
+        auth01.setTokenExp(System.currentTimeMillis()+1000000000);
+        authRepository.save(auth01);
+
         RegisterEmployeeRequest request = new RegisterEmployeeRequest();
         request.setUsername("");
         request.setEmail("atri@gmail.com");
@@ -157,6 +176,7 @@ public class AuthControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
+                        .header("X-API-TOKEN","abcdefgh")
         ).andExpect(
                 status().isBadRequest()
         ).andDo(result -> {
@@ -167,6 +187,15 @@ public class AuthControllerTest {
 
     @Test
     void testRegisterEmployeeBad() throws Exception {
+        Auth auth01 = new Auth();
+        auth01.setUsername("ayarin10");
+        auth01.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
+        auth01.setRole(0);
+        auth01.setStatus(1);
+        auth01.setToken("abcdefgh");
+        auth01.setTokenExp(System.currentTimeMillis()+1000000000);
+        authRepository.save(auth01);
+
         RegisterEmployeeRequest request = new RegisterEmployeeRequest();
         request.setUsername("atri10");
         request.setEmail("atrigmailcom");
@@ -177,6 +206,7 @@ public class AuthControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
+                        .header("X-API-TOKEN","abcdefgh")
         ).andExpect(
                 status().isBadRequest()
         ).andDo(result -> {
@@ -188,6 +218,15 @@ public class AuthControllerTest {
 
     @Test
     void testRegisterEmployeeExist() throws Exception {
+        Auth auth01 = new Auth();
+        auth01.setUsername("ayarin10");
+        auth01.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
+        auth01.setRole(0);
+        auth01.setStatus(1);
+        auth01.setToken("abcdefgh");
+        auth01.setTokenExp(System.currentTimeMillis()+1000000000);
+        authRepository.save(auth01);
+
         Auth auth = new Auth();
         auth.setUsername("atri10");
         auth.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
@@ -205,6 +244,7 @@ public class AuthControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
+                        .header("X-API-TOKEN","abcdefgh")
         ).andExpect(
                 status().isBadRequest()
         ).andDo(result -> {
@@ -216,12 +256,22 @@ public class AuthControllerTest {
 
     @Test
     void testRegisterEmployeeEmailExist() throws Exception {
+        Auth auth01 = new Auth();
+        auth01.setUsername("ayarin10");
+        auth01.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
+        auth01.setRole(0);
+        auth01.setStatus(1);
+        auth01.setToken("abcdefgh");
+        auth01.setTokenExp(System.currentTimeMillis()+1000000000);
+        authRepository.save(auth01);
+
         Auth auth = new Auth();
         auth.setUsername("atri10");
         auth.setEmail("atri@gmail.com");
         auth.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
         auth.setRole(1);
         auth.setStatus(1);
+
         authRepository.save(auth);
 
         RegisterEmployeeRequest request = new RegisterEmployeeRequest();
@@ -234,6 +284,7 @@ public class AuthControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
+                        .header("X-API-TOKEN","abcdefgh")
         ).andExpect(
                 status().isBadRequest()
         ).andDo(result -> {

@@ -5,6 +5,7 @@ import com.atri.puscerdas.model.TokenResponse;
 import com.atri.puscerdas.model.WebResponse;
 import com.atri.puscerdas.model.auth.*;
 import com.atri.puscerdas.service.AuthService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class AuthController {
     @Autowired
     private AuthService authService;
@@ -40,8 +42,9 @@ public class AuthController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<String>registerEmployee(@RequestBody RegisterEmployeeRequest request){
-        authService.registerEmployee(request);
+    public WebResponse<String>registerEmployee(Auth auth,@RequestBody RegisterEmployeeRequest request){
+
+        authService.registerEmployee(auth,request);
         return  WebResponse.<String>builder().data("OKE").build();
     }
 
@@ -50,8 +53,8 @@ public class AuthController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<List<AuthResponse>>getEmployee(){
-        List<AuthResponse> responseList= authService.getListEmployee();
+    public WebResponse<List<AuthResponse>>getEmployee(Auth auth){
+        List<AuthResponse> responseList= authService.getListEmployee(auth);
         return  WebResponse.<List<AuthResponse>>builder().data(responseList).build();
     }
 
