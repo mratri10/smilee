@@ -83,10 +83,17 @@ public class AuthController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public WebResponse<String>resetPassword(@RequestBody ResetRequest request){
-        authService.resetPassword(request);
-        return WebResponse.<String>builder().data("OKE").build();
+        String id = authService.resetPassword(request);
+        return WebResponse.<String>builder().data(id).build();
     }
-
+    @GetMapping(
+            path = "/api/reset-password/{username}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<ResetPassword>getResetPassword(Auth auth, @PathVariable String username){
+        ResetPassword resetPasswords= authService.detailResetPassword(auth, username);
+        return WebResponse.<ResetPassword>builder().data(resetPasswords).build();
+    }
     @GetMapping(
             path = "/api/reset-password-list",
             produces = MediaType.APPLICATION_JSON_VALUE

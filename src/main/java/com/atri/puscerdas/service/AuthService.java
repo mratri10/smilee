@@ -147,15 +147,24 @@ public class AuthService {
         return  System.currentTimeMillis()+(1000 * 60 * 60 * 24 * 10);
     }
     @Transactional
-    public void resetPassword(ResetRequest request){
+    public String resetPassword(ResetRequest request){
         validationService.validate(request);
 
+        String id = UUID.randomUUID().toString();
+
         ResetPassword resetPassword = new ResetPassword();
-        resetPassword.setId(UUID.randomUUID().toString());
+        resetPassword.setId(id);
         resetPassword.setUsername(request.getUsername());
         resetPassword.setIdExp(next2hours());
 
         resetPasswordRepository.save(resetPassword);
+
+        return id;
+    }
+
+    @Transactional
+    public ResetPassword detailResetPassword(Auth auth, String username){
+        return resetPasswordRepository.findByUsername(username).orElse(null);
     }
 
     @Transactional
@@ -167,14 +176,12 @@ public class AuthService {
     @Transactional
     public void changePassword(ChangePasswordRequest request){
         validationService.validate(request);
-        log.info(request.getIdReset());
         ResetPassword resetPassword = resetPasswordRepository.findById(request.getIdReset()).orElse(null);
-        if(resetPassword !=null && Objects.equals(resetPassword.getUsername(), request.getUsername()) && System.currentTimeMillis() < request.getIdResetExp()){
-            Auth auth = authRepository.findById(request.getUsername()).orElse(null);
+        if(resetPassword !=null && System.currentTimeMillis() < resetPassword.getIdExp()){
+            Auth auth = authRepository.findById(resetPassword.getUsername()).orElse(null);
             if(auth != null){
                 auth.setPassword(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
                 authRepository.save(auth);
-                log.info(request.getIdReset());
                 resetPasswordRepository.deleteById(request.getIdReset());
             }else{
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username not Found");

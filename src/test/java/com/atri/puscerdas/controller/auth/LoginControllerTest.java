@@ -167,7 +167,7 @@ public class LoginControllerTest {
         ).andDo(result -> {
             WebResponse<String>response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
             assertNull(response.getErrors());
-            assertEquals("OKE", response.getData());
+            assertNotNull(response.getData());
         });
     }
     @Test

@@ -13,10 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ChangePasswordRequest {
-    @NotBlank
-    @Size(max= 100)
-    @Size(min= 4, message = "Minimal Character is 4")
-    private String username;
 
     @NotBlank
     @Size(max = 100)
@@ -25,6 +21,4 @@ public class ChangePasswordRequest {
 
     @NotBlank
     private String idReset;
-
-    private long idResetExp;
 }
