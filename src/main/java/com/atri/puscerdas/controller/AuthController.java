@@ -49,9 +49,7 @@ public class AuthController {
     }
 
     @GetMapping(
-            path = "/api/auth/employee-regist",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            path = "/api/auth/employee-regist"
     )
     public WebResponse<List<AuthResponse>>getEmployee(Auth auth){
         List<AuthResponse> responseList= authService.getListEmployee(auth);
