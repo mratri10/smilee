@@ -209,10 +209,8 @@ public class LoginControllerTest {
         resetPasswordRepository.save(resetPassword1);
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
-        changePasswordRequest.setUsername("atri10");
         changePasswordRequest.setPassword("123456");
         changePasswordRequest.setIdReset("123456");
-        changePasswordRequest.setIdResetExp(System.currentTimeMillis()+100000000);
 
         mockMvc.perform(
                 post("/api/change-password")
@@ -224,7 +222,7 @@ public class LoginControllerTest {
         ).andDo(result -> {
             WebResponse<String>response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
             assertNull(response.getErrors());
-            Auth auth1 = authRepository.findById(changePasswordRequest.getUsername()).orElse(null);
+            Auth auth1 = authRepository.findById("atri10").orElse(null);
             assert auth1 != null;
             assertTrue(BCrypt.checkpw("123456", auth1.getPassword()));
         });
@@ -246,45 +244,8 @@ public class LoginControllerTest {
         resetPasswordRepository.save(resetPassword);
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
-        changePasswordRequest.setUsername("atri10");
         changePasswordRequest.setPassword("123456");
         changePasswordRequest.setIdReset("123456rer");
-        changePasswordRequest.setIdResetExp(System.currentTimeMillis()+100000000);
-
-        mockMvc.perform(
-                post("/api/change-password")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(changePasswordRequest))
-        ).andExpect(
-                status().isBadRequest()
-        ).andDo(result -> {
-            WebResponse<String>response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
-            assertNotNull(response.getErrors());
-            assertEquals("ID ini sudah tidak berlaku", response.getErrors());
-        });
-    }
-
-    @Test
-    void testChangePasswordWrongUser() throws Exception{
-        Auth auth = new Auth();
-        auth.setPassword(BCrypt.hashpw("654321", BCrypt.gensalt()));
-        auth.setUsername("atri10");
-        auth.setStatus(1);
-        auth.setRole(1);
-        authRepository.save(auth);
-
-        ResetPassword resetPassword = new ResetPassword();
-        resetPassword.setUsername("atri10");
-        resetPassword.setId("123456");
-        resetPassword.setIdExp(System.currentTimeMillis()+100000000);
-        resetPasswordRepository.save(resetPassword);
-
-        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
-        changePasswordRequest.setUsername("atri1000");
-        changePasswordRequest.setPassword("123456");
-        changePasswordRequest.setIdReset("123456");
-        changePasswordRequest.setIdResetExp(System.currentTimeMillis()+100000000);
 
         mockMvc.perform(
                 post("/api/change-password")
@@ -316,10 +277,8 @@ public class LoginControllerTest {
         resetPasswordRepository.save(resetPassword);
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
-        changePasswordRequest.setUsername("atri10");
         changePasswordRequest.setPassword("123456");
         changePasswordRequest.setIdReset("123456");
-        changePasswordRequest.setIdResetExp(System.currentTimeMillis()+100000000);
 
         mockMvc.perform(
                 post("/api/change-password")
@@ -346,14 +305,12 @@ public class LoginControllerTest {
         ResetPassword resetPassword = new ResetPassword();
         resetPassword.setUsername("atri10");
         resetPassword.setId("123456");
-        resetPassword.setIdExp(System.currentTimeMillis()+100000000);
+        resetPassword.setIdExp(System.currentTimeMillis()-100000000);
         resetPasswordRepository.save(resetPassword);
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
-        changePasswordRequest.setUsername("atri10");
         changePasswordRequest.setPassword("123456");
         changePasswordRequest.setIdReset("123456");
-        changePasswordRequest.setIdResetExp(System.currentTimeMillis()-100000000);
 
         mockMvc.perform(
                 post("/api/change-password")
